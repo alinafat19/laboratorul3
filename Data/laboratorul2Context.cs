@@ -16,5 +16,11 @@ namespace laboratorul2.Data
 
         public DbSet<laboratorul2.Models.Book> Book { get; set; } = default!;
         public DbSet<laboratorul2.Models.Publisher> Publisher { get; set; } = default!;
+        public DbSet<laboratorul2.Models.BookCategory> BookCategory { get; set; } = default!;
+        public DbSet<laboratorul2.Models.Category> Category { get; set; } = default!;
+        public DbSet<laboratorul2.Models.Author> Authors { get; set; } = default!; // modificare
+        public IEnumerable<object> Author { get; internal set; } // modificare
+        public DbSet<laboratorul2.Models.Member> Member { get; set; } = default!;
+        public DbSet<laboratorul2.Models.Borrowing> Borrowing { get; set; } = default!;
     }
 }

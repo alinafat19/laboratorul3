@@ -19,11 +19,45 @@ namespace laboratorul2.Pages.Books
             _context = context;
         }
 
-        public IList<Book> Book { get;set; } = default!;
+        public IList<Book> Book { get; set; } = default!;
+        public BookData BookD { get; set; }
+        public int BookID { get; set; }
+        public int CategoryID { get; set; }
+        public string TitleSort { get; set; }
+        public string CurrentFilter { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(int? id, int? categoryID, string sortOrder, string
+searchString)
         {
+            BookD = new BookData();
+            TitleSort = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
+            CurrentFilter = searchString;
             Book = await _context.Book.Include(b => b.Publisher).ToListAsync();
+
+            BookD.Books = await _context.Book
+             .Include(b => b.Publisher)
+             .Include(b => b.BookCategories)
+             .ThenInclude(b => b.Category)
+             .AsNoTracking()
+             .OrderBy(b => b.Title)
+             .ToListAsync();
+           
+                if (id != null)
+            {
+                BookID = id.Value;
+                Book book = BookD.Books
+                .Where(i => i.ID == id.Value).Single();
+                BookD.Categories = book.BookCategories.Select(s => s.Category);
+            }
+            switch (sortOrder)
+            {
+                case "title_desc":
+                    BookD.Books = BookD.Books.OrderByDescending(s =>
+                   s.Title);
+                    break;
+
+
+            }
         }
     }
 }
