@@ -96,6 +96,8 @@ namespace laboratorul2.Areas.Identity.Pages.Account
             if (result.Succeeded)
             {
                 _logger.LogInformation("Utilizatorul a creat un nou cont cu parolă.");
+                var role = await _userManager.AddToRoleAsync(user, "User");
+
 
                 var userId = await _userManager.GetUserIdAsync(user);
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
